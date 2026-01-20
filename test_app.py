@@ -7,6 +7,9 @@ def client():
     app.config['TESTING'] = True
     
     with app.test_client() as client:
+        # Authenticate first
+        client.set_cookie('roaster_auth', 'opendoor')
+        
         with app.app_context():
             db.create_all()
         yield client

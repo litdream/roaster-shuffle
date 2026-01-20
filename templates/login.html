@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="container">
+    <article>
+        <header><strong>Login Required</strong></header>
+        <form action="{{ url_for('login') }}" method="POST">
+            <fieldset role="group">
+                <input type="password" name="password" placeholder="Password" aria-label="Password" required>
+                <input type="submit" value="Enter">
+            </fieldset>
+        </form>
+    </article>
+</section>
+{% endblock %}

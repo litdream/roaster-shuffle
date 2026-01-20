@@ -17,6 +17,33 @@ def create_app():
 
 app = create_app()
 
+# Simple Security
+SECRET_PASSWORD = "opendoor"
+AUTH_COOKIE_NAME = "roaster_auth"
+
+@app.before_request
+def require_login():
+    if request.endpoint == 'static':
+        return
+    if request.endpoint == 'login':
+        return
+    
+    if request.cookies.get(AUTH_COOKIE_NAME) != SECRET_PASSWORD:
+        return redirect(url_for('login'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        password = request.form.get('password')
+        if password == SECRET_PASSWORD:
+            response = redirect(url_for('index'))
+            # Expire in 6 hours
+            response.set_cookie(AUTH_COOKIE_NAME, SECRET_PASSWORD, max_age=6*60*60)
+            return response
+        else:
+            return render_template('login.html', error="Invalid password") # Basic feedback could be flash
+    return render_template('login.html')
+
 @app.route('/')
 def index():
     events = Event.query.order_by(Event.created_at.desc()).all()

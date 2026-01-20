@@ -40,7 +40,7 @@
         <header>
             <h3>Roster <small>({{ roster|length }})</small></h3>
             <form action="{{ url_for('shuffle_teams', event_id=event.id) }}" method="POST">
-                <input type="submit" value="Shuffle Teams" {% if not roster %}disabled{% endif %}>
+                <input type="submit" value="Shuffle Teams (Admin)" {% if not roster %}disabled{% endif %}>
             </form>
         </header>
         <div class="roaster-list" id="roaster-list">
