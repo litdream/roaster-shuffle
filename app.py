@@ -43,7 +43,19 @@ def event_dashboard(event_id):
     event = Event.query.get_or_404(event_id)
     pool = [p for p in event.participants if p.status == 'pool']
     roster = [p for p in event.participants if p.status == 'roster']
-    return render_template('event.html', event=event, pool=pool, roster=roster)
+    
+    # Group by team_id
+    teams = {}
+    for p in roster:
+        if p.team_id:
+            if p.team_id not in teams:
+                teams[p.team_id] = []
+            teams[p.team_id].append(p)
+            
+    # Sort teams by team_id
+    sorted_teams = dict(sorted(teams.items()))
+    
+    return render_template('event.html', event=event, pool=pool, roster=roster, teams=sorted_teams)
 
 @app.route('/event/<int:event_id>/register', methods=['POST'])
 def register_participant(event_id):

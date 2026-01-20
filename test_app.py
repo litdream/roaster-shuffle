@@ -48,7 +48,10 @@ def test_full_flow(client):
         assert roster_count == 4
 
     # 4. Shuffle (Form Teams)
-    client.post(f'/event/{event_id}/shuffle', follow_redirects=True)
+    response = client.post(f'/event/{event_id}/shuffle', follow_redirects=True)
+    assert b'Team Assignments' in response.data
+    assert b'Player 1' in response.data
+    assert b'Player 2' in response.data
 
     with app.app_context():
         # Verify teams

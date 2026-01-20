@@ -49,12 +49,35 @@
                     hx-post="{{ url_for('move_participant', participant_id=p.id) }}"
                     hx-target="body"
                     class="participant-btn primary">
-                    {{ p.name }} 
-                    {% if p.team_id %}<small>(Team {{ p.team_id }})</small>{% endif %}
+                    {{ p.name }}
                 </button>
             {% endfor %}
         </div>
     </section>
 </div>
+
+{% if teams %}
+<section>
+    <h3>Team Assignments</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Team Num</th>
+                <th>Player 1</th>
+                <th>Player 2</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team_id, members in teams.items() %}
+            <tr>
+                <td>{{ team_id }}</td>
+                <td>{{ members[0].name if members|length > 0 else '' }}</td>
+                <td>{{ members[1].name if members|length > 1 else '' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endif %}
 
 {% endblock %}
