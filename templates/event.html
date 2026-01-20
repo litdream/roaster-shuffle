@@ -4,7 +4,7 @@
 <header>
     <nav aria-label="breadcrumb">
         <ul>
-            <li><a href="{{ url_for('index') }}">Events</a></li>
+            <li><a href="{{ url_for('main.index') }}">Events</a></li>
             <li>{{ event.name }}</li>
         </ul>
     </nav>
@@ -16,7 +16,7 @@
     <section>
         <header>
             <h3>Pool <small>({{ pool|length }})</small></h3>
-            <form action="{{ url_for('register_participant', event_id=event.id) }}" method="POST">
+            <form action="{{ url_for('main.register_participant', event_id=event.id) }}" method="POST">
                 <fieldset role="group">
                     <input type="text" name="name" placeholder="Participant Name" required>
                     <input type="submit" value="Add">
@@ -26,7 +26,7 @@
         <div class="pool-list" id="pool-list">
             {% for p in pool %}
                 <button 
-                    hx-post="{{ url_for('move_participant', participant_id=p.id) }}"
+                    hx-post="{{ url_for('main.move_participant', participant_id=p.id) }}"
                     hx-target="body"
                     class="participant-btn secondary outline">
                     {{ p.name }}
@@ -39,14 +39,21 @@
     <section>
         <header>
             <h3>Roster <small>({{ roster|length }})</small></h3>
-            <form action="{{ url_for('shuffle_teams', event_id=event.id) }}" method="POST">
-                <input type="submit" value="Shuffle Teams (Admin)" {% if not roster %}disabled{% endif %}>
-            </form>
+            <!-- Shuffle Button Container -->
+            <div id="shuffle-container">
+                <form id="shuffle-form" action="{{ url_for('main.shuffle_teams', event_id=event.id) }}" method="POST">
+                    {% if g.is_admin %}
+                    <input type="submit" value="Shuffle Teams" {% if not roster %}disabled{% endif %}>
+                    {% else %}
+                        <input type="submit" value="Shuffle Teams" disabled>
+                    {% endif %}
+                    </form>
+            </div>
         </header>
         <div class="roaster-list" id="roaster-list">
             {% for p in roster %}
                 <button 
-                    hx-post="{{ url_for('move_participant', participant_id=p.id) }}"
+                    hx-post="{{ url_for('main.move_participant', participant_id=p.id) }}"
                     hx-target="body"
                     class="participant-btn primary">
                     {{ p.name }}
@@ -78,6 +85,34 @@
         </tbody>
     </table>
 </section>
+{% endif %}
+
+<!-- Admin Dialog -->
+<dialog id="admin-dialog">
+    <article>
+        <header>
+            <button aria-label="Close" rel="prev" onclick="document.getElementById('admin-dialog').close()"></button>
+            <h3>Become Admin</h3>
+        </header>
+        <form hx-post="{{ url_for('main.verify_admin') }}" hx-target="#admin-error" hx-swap="outerHTML">
+            <input type="hidden" name="event_id" value="{{ event.id }}">
+            <div id="admin-error"></div>
+            <fieldset role="group">
+                <input type="password" name="admin_password" placeholder="Admin Password" required autofocus>
+                <button type="submit">Unlock</button>
+            </fieldset>
+        </form>
+    </article>
+</dialog>
+
+<!-- Become Admin Corner Link -->
+{% if not g.is_admin %}
+<div style="position: fixed; bottom: 1rem; right: 1rem; z-index: 1000;">
+    <a href="#" role="button" class="outline secondary"
+        onclick="document.getElementById('admin-dialog').showModal(); return false;">
+        Become Admin
+    </a>
+</div>
 {% endif %}
 
 {% endblock %}

@@ -35,3 +35,6 @@ Same will happen on the Roaster side. If the name on the roaster button is click
 Note that, we are starting with a simplified case.  There is no distinction between "Participants" and "Organizers" in multi-user environment.  So, change must happen in the server.
 Which means, each click of Roaster or Pool button will update the server.  So, hopefully, it is running like a AJAX application, (change happens in server every time, but page refresh is not entirely done.  Only update Roaster/Pool at the moment of a button click.)
 
+## Addition
+
+[admin function](admin.md)

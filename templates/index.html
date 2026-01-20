@@ -15,11 +15,11 @@
             <tbody>
                 {% for event in events %}
                 <tr>
-                    <td><a href="{{ url_for('event_dashboard', event_id=event.id) }}">{{ event.name }}</a></td>
+                    <td><a href="{{ url_for('main.event_dashboard', event_id=event.id) }}">{{ event.name }}</a></td>
                     <td>{{ event.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
                     <td>
                         <button class="outline secondary" 
-                                hx-delete="{{ url_for('delete_event', event_id=event.id) }}"
+                                hx-delete="{{ url_for('main.delete_event', event_id=event.id) }}"
                                 hx-confirm="Are you sure?"
                                 hx-target="closest tr"
                                 hx-swap="outerHTML">
@@ -37,7 +37,7 @@
 
 <section>
     <h3>Create New Event</h3>
-    <form action="{{ url_for('create_event') }}" method="POST">
+    <form action="{{ url_for('main.create_event') }}" method="POST">
         <fieldset role="group">
             <input type="text" name="name" placeholder="Event Name" required>
             <input type="submit" value="Create Event">
