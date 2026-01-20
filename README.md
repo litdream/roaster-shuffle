@@ -49,6 +49,23 @@ It replaces manual spreadsheet management with a simple, interactive interface w
 2. **Open in Browser**:
    Visit [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
+# Run in Docker
+   
+   Build the image:
+   ```bash
+   docker build -t roaster-shuffle .
+   ```
+
+   Run the container:
+   ```bash
+   docker run -p 5000:5000 roaster-shuffle
+   ```
+   
+   *Tip: To persist the database, mount a volume:*
+   ```bash
+   docker run -p 5000:5000 -v $(pwd)/roaster.db:/app/roaster.db roaster-shuffle
+   ```
+
 ## Running Tests
 
 The project includes a test suite using `pytest` to ensure core functionality works as expected.
