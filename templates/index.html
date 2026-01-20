@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+    <h2>Events</h2>
+    {% if events %}
+        <table class="striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                <tr>
+                    <td><a href="{{ url_for('event_dashboard', event_id=event.id) }}">{{ event.name }}</a></td>
+                    <td>{{ event.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>
+                        <button class="outline secondary" 
+                                hx-delete="{{ url_for('delete_event', event_id=event.id) }}"
+                                hx-confirm="Are you sure?"
+                                hx-target="closest tr"
+                                hx-swap="outerHTML">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No events found. Create one!</p>
+    {% endif %}
+</section>
+
+<section>
+    <h3>Create New Event</h3>
+    <form action="{{ url_for('create_event') }}" method="POST">
+        <fieldset role="group">
+            <input type="text" name="name" placeholder="Event Name" required>
+            <input type="submit" value="Create Event">
+        </fieldset>
+    </form>
+</section>
+{% endblock %}

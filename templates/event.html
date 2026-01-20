@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header>
+    <nav aria-label="breadcrumb">
+        <ul>
+            <li><a href="{{ url_for('index') }}">Events</a></li>
+            <li>{{ event.name }}</li>
+        </ul>
+    </nav>
+    <h2>{{ event.name }}</h2>
+</header>
+
+<div class="grid">
+    <!-- Pool Column -->
+    <section>
+        <header>
+            <h3>Pool <small>({{ pool|length }})</small></h3>
+            <form action="{{ url_for('register_participant', event_id=event.id) }}" method="POST">
+                <fieldset role="group">
+                    <input type="text" name="name" placeholder="Participant Name" required>
+                    <input type="submit" value="Add">
+                </fieldset>
+            </form>
+        </header>
+        <div class="pool-list" id="pool-list">
+            {% for p in pool %}
+                <button 
+                    hx-post="{{ url_for('move_participant', participant_id=p.id) }}"
+                    hx-target="body"
+                    class="participant-btn secondary outline">
+                    {{ p.name }}
+                </button>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Roster Column -->
+    <section>
+        <header>
+            <h3>Roster <small>({{ roster|length }})</small></h3>
+            <form action="{{ url_for('shuffle_teams', event_id=event.id) }}" method="POST">
+                <input type="submit" value="Shuffle Teams" {% if not roster %}disabled{% endif %}>
+            </form>
+        </header>
+        <div class="roaster-list" id="roaster-list">
+            {% for p in roster %}
+                <button 
+                    hx-post="{{ url_for('move_participant', participant_id=p.id) }}"
+                    hx-target="body"
+                    class="participant-btn primary">
+                    {{ p.name }} 
+                    {% if p.team_id %}<small>(Team {{ p.team_id }})</small>{% endif %}
+                </button>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+{% endblock %}
