@@ -110,3 +110,4 @@ venv.bak/
 ## Some UV stuff to ignore
 .python-version
 pyproject.toml
+instance/
