@@ -66,6 +66,8 @@ def index():
 
 @main.route('/event/create', methods=['POST'])
 def create_event():
+    if not g.is_admin:
+        return "Unauthorized", 403
     name = request.form.get('name')
     if name:
         event = Event(name=name)

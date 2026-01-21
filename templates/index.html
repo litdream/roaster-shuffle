@@ -38,7 +38,7 @@
 <section>
     <h3>Create New Event</h3>
     <form action="{{ url_for('main.create_event') }}" method="POST">
-        <fieldset role="group">
+        <fieldset role="group" {% if not g.is_admin %}disabled{% endif %}>
             <input type="text" name="name" placeholder="Event Name" required>
             <input type="submit" value="Create Event">
         </fieldset>

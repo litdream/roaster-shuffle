@@ -66,8 +66,17 @@ def test_permissions(client):
     # Logout/Reset to User
     client.set_cookie('roaster_auth', 'opendoor')
     
-    # Create Event
+    # Try Create Event as User -> Should Fail (403)
+    response = client.post('/event/create', data=dict(name="Restricted Event"), follow_redirects=True)
+    assert response.status_code == 403
+
+    # Switch to Admin to Create Event
+    client.set_cookie('roaster_auth', 'opendooradmin')
     client.post('/event/create', data=dict(name="Restricted Event"), follow_redirects=True)
+    
+    # Switch back to User
+    client.set_cookie('roaster_auth', 'opendoor')
+
     with client.application.app_context():
         event = Event.query.first()
         event_id = event.id
