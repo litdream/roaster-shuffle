@@ -77,6 +77,8 @@ def create_event():
 
 @main.route('/event/<int:event_id>', methods=['DELETE'])
 def delete_event(event_id):
+    if not g.is_admin:
+        return "Unauthorized", 403
     event = Event.query.get_or_404(event_id)
     db.session.delete(event)
     db.session.commit()

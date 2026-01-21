@@ -22,7 +22,8 @@
                                 hx-delete="{{ url_for('main.delete_event', event_id=event.id) }}"
                                 hx-confirm="Are you sure?"
                                 hx-target="closest tr"
-                                hx-swap="outerHTML">
+                                hx-swap="outerHTML"
+                                {% if not g.is_admin %}disabled{% endif %}>
                             Delete
                         </button>
                     </td>

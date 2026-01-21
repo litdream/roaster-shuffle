@@ -99,3 +99,17 @@ def test_permissions(client):
     response = client.post(f'/event/{event_id}/shuffle', data=dict(admin_token='opendooradmin'), follow_redirects=True)
     assert response.status_code == 200
     assert b'Team Assignments' in response.data
+
+    # Test Delete Permissions
+    # User cannot delete
+    client.set_cookie('roaster_auth', 'opendoor')
+    response = client.delete(f'/event/{event_id}')
+    assert response.status_code == 403
+
+    # Admin can delete
+    client.set_cookie('roaster_auth', 'opendooradmin')
+    response = client.delete(f'/event/{event_id}')
+    assert response.status_code == 200
+    
+    with client.application.app_context():
+        assert Event.query.get(event_id) is None
