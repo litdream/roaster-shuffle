@@ -64,6 +64,8 @@ It replaces manual spreadsheet management with a simple, interactive interface w
    *Tip: To persist the database, mount a volume:*
    ```bash
    docker run -p 5000:5000 -v $(pwd)/roaster.db:/app/roaster.db roaster-shuffle
+    - in church (tennis.raynic.net):
+      - docker run -p 30033:5000 -v /home/rchung/bitbucket/roaster-shuffle/instance/roaster.db:/app/roaster.db roaster-shuffle
    ```
 
 ## Running Tests
@@ -86,3 +88,4 @@ pytest
 ## License
 
 MIT License
+
