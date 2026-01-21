@@ -65,7 +65,7 @@ It replaces manual spreadsheet management with a simple, interactive interface w
    ```bash
    docker run -p 5000:5000 -v $(pwd)/roaster.db:/app/roaster.db roaster-shuffle
     - in church (tennis.raynic.net):
-      - docker run -p 30033:5000 -v /home/rchung/bitbucket/roaster-shuffle/instance/roaster.db:/app/roaster.db roaster-shuffle
+      - docker run -d -p 30033:5000 -v /home/rchung/bitbucket/roaster-shuffle/instance/roaster.db:/app/roaster.db roaster-shuffle
    ```
 
 ## Running Tests
